@@ -1,0 +1,57 @@
+import java.util.Scanner;
+import java.util.Queue;
+import java.util.HashMap;
+import java.util.LinkedList;
+public class Solution {
+	
+	public static void main(String[] args) {
+       
+         Scanner s = new Scanner(System.in);
+         int v = s.nextInt();
+		 int e = s.nextInt();
+		 
+		 int[][] matrix = new int[v][v];
+         Queue<Integer>  pendingVertices = new LinkedList<>();
+         HashMap<Integer,Integer> childParentPath = new HashMap<>();
+		 boolean[] visited = new boolean[v];
+		
+		 for(int i = 0  ; i<e ; i++){
+			 int x = s.nextInt();
+			 int y = s.nextInt();
+             matrix[x][y] = 1;
+			 matrix[y][x] = 1; 
+		 }
+
+		 int a = s.nextInt();
+		 int b = s.nextInt();
+// upar input ----->>> niche ab main program
+        pendingVertices.add(a);
+        visited[a]=true;
+
+        while(!pendingVertices.isEmpty()){
+
+             int vertex = pendingVertices.poll();
+
+             for( int i = 0 ; i < v ; i++){
+
+                     if(matrix[vertex][i] ==1 && visited[i]==false ){
+
+							   	if (i == b) {// if we get the destination--> backtrack the path and print
+									System.out.print(b+ " ");// curren print
+									System.out.print(vertex + " ");// bachche(b) ke pita 
+			 //_______sato puste_________________
+									while (vertex != a) {
+										vertex = childParentPath.get(vertex);// pita ji ke pita ji
+										System.out.print(vertex + " ");
+									       }
+								    	return;// start pe aa gye to 
+								      }
+
+							   pendingVertices.add(i);
+							   childParentPath.put(i,vertex);
+                               visited[i]=true;
+						         }
+					   }
+	           }
+	    }
+}

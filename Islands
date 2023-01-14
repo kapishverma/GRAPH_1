@@ -1,0 +1,66 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class Runner {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static int[][] takeInput() throws IOException {
+		String[] strNums;
+        strNums = br.readLine().split("\\s");
+        int n = Integer.parseInt(strNums[0]);
+        int e = Integer.parseInt(strNums[1]);
+
+        int[][] edges = new int[n][n];
+        int firstvertex, secondvertex;
+
+        for (int i = 0; i < e; i++) {
+            String[] strNums1;
+            strNums1 = br.readLine().split("\\s");
+            firstvertex = Integer.parseInt(strNums1[0]);
+            secondvertex = Integer.parseInt(strNums1[1]);
+            edges[firstvertex][secondvertex] = 1;
+            edges[secondvertex][firstvertex] = 1;
+        }
+        return edges;
+    }
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        int [][]edges = takeInput();
+        
+        int ans = Solution.numConnected(edges, edges.length);
+        System.out.println(ans);
+		
+	}
+}
+//_________________________________________FUNCTION_________________________________________
+import java.util.Queue;
+import java.util.LinkedList;
+public class Solution {
+
+	public static int numConnected(int[][] edges, int v) {
+     
+      int connectedCount = 0;
+      boolean[] visited = new boolean[v];
+      Queue<Integer> toBeVisited =  new LinkedList<>();
+
+	  for(int i = 0 ; i < v ; i++){
+		          
+				  if(!visited[i]){
+					connectedCount++;
+                    visited[i]=true;
+					toBeVisited.add(i);
+	
+			
+			while(!toBeVisited.isEmpty()){
+				 int k =  toBeVisited.poll();
+				   for(int j  = 0 ; j< v ; j++){
+                        if(edges[k][j]==1 && !visited[j] ){
+							visited[j]=true;
+							toBeVisited.add(j);
+					    	}
+				        }
+	                 }
+				}
+			}
+		  return connectedCount;
+	}
+}

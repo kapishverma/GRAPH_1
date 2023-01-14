@@ -1,0 +1,43 @@
+import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Solution {
+
+	public static void main(String[] args) {
+        
+    Scanner s = new Scanner(System.in);
+	int V = s.nextInt();
+	int E = s.nextInt();
+	int[][] matrix = new int[V][V];
+	for(int i = 0 ; i< E ; i++){
+		int a= s.nextInt();
+		int b = s.nextInt();
+				matrix[a][b] = 1;
+				matrix[b][a] = 1;
+	}
+	boolean[] visited = new boolean[V];
+	Queue<Integer> toBeVisit = new LinkedList<>();
+
+	 for(int vertex = 0; vertex <V ; vertex++){
+                 
+				  if(visited[vertex]==false){
+						toBeVisit.add(vertex);
+				      visited[vertex]=true;
+				      }
+	   while(!toBeVisit.isEmpty()){
+
+		   int index = toBeVisit.poll();
+			
+		    	System.out.print(index + " ");
+
+						 for(int i = 0 ; i<V ; i++){
+                  if(matrix[index][i]==1 && visited[i]==false){
+                          toBeVisit.add(i);
+ 					      visited[i]=true;
+				   }
+		        }
+	        }
+        }
+	}
+}

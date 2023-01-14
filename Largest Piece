@@ -1,0 +1,71 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Runner {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static String[] takeInput() throws IOException {
+        int n = Integer.parseInt(br.readLine().trim());
+        
+
+        String[] edge = new String[n];
+        for (int i = 0; i < n; i++) {
+            edge[i] = br.readLine().replaceAll("\\s", "");
+        }
+        return edge;
+    }
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+
+        String[] edge = takeInput();
+        int ans = Solution.dfs(edge,edge.length);
+        System.out.println(ans);   
+    }	
+}
+//______________________________FUNCTION___________________________________
+public class Solution {
+
+    static int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    static boolean[][] visited ;
+    static  String[] string;
+
+	public static int dfs(String[] edge, int n) {
+		
+		int max = 0; 
+      visited = new boolean[n][n];
+	  string = edge;
+
+      for(int i =0 ; i < n ; i++){
+		  for(int j = 0 ; j < n ; j++ ){
+                if(edge[i].charAt(j) == '1' && !visited[i][j]){
+                    visited[i][j]=true;
+				int temp  =  helpetFunction( i , j , n , 1 );
+				if(temp>max)
+				max=temp;
+				}
+		  }
+	  }
+		return max;
+	}
+
+	static boolean indexValidity(int x , int y , int n ){
+         if(x>=0 && y>=0 && x<n && y<n)
+		 return true;
+		 return false;
+	}
+
+ static int helpetFunction(int x , int y , int n, int max){
+         
+   for(int i = 0 ; i < 4 ; i++){
+     int newx = x + dir[i][0];
+	 int newy = y + dir[i][1];
+
+	 if(  indexValidity(newx,newy,n) &&   string[newx].charAt(newy)== '1' && !visited[newx][newy]){
+		 visited[newx][newy]=true;
+		 max = helpetFunction(newx , newy , n , ++max);
+	    }
+     }
+     return max;
+    }
+}

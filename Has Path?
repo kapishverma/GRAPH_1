@@ -1,0 +1,54 @@
+import java.util.Scanner;
+import java.io.IOException;
+public class Solution {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+       
+    Scanner s = new Scanner(System.in);
+	int V = s.nextInt();
+	int E = s.nextInt();
+
+	boolean[] visited = new boolean[V];
+	int[][] matrix = new int[V][V];
+
+	for(int i = 0 ; i< E ; i++){
+		int x = s.nextInt();
+		int y = s.nextInt();
+				matrix[x][y] = 1;
+				matrix[y][x] = 1;
+	}
+	int a = s.nextInt();
+	int b = s.nextInt();
+   
+    if(b>=V || a>=V){
+		System.out.print("false");
+	    return;
+	}
+     
+     visited[a] = true;
+
+	 boolean result = find_path(matrix , a , b ,visited);
+	 if(result == true)
+		 System.out.print("true");
+	else
+		 System.out.print("false");
+	}
+private	static boolean find_path(int[][] matrix , int a , int b, boolean[] visited){
+       
+	   if(matrix[a][b]==1 || a==b)
+		      return true;
+
+	  boolean result = false;
+	  for(int i =0 ; i < matrix.length ; i++){
+
+		  if(matrix[a][i]==1 && visited[i]==false){
+                   visited[i]=true;
+			result = result || find_path(matrix, i , b, visited);
+			
+			if(result==true)
+				return result;
+		  }
+	  }
+	return result;
+	}
+}

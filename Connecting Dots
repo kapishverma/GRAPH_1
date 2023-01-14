@@ -1,0 +1,99 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static String[] takeInput() throws IOException {
+		String[] strNums;
+        strNums = br.readLine().split("\\s");
+
+        int N = Integer.parseInt(strNums[0]);
+        int M = Integer.parseInt(strNums[1]);
+
+		String[] Graph = new String[N];
+		
+        for (int i = 0; i < N; ++i) {
+            Graph[i] = br.readLine();
+        }
+
+        return Graph;
+    }
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+
+
+        String[] Graph = takeInput();
+        if (new Solution().solve(Graph,Graph.length,Graph[0].length())==1){
+            System.out.print("true");
+        }
+        else{
+            System.out.print("false");
+        }
+
+
+    }
+}
+//_______________________________________FUNCTION_______________________
+
+public class Solution {
+
+int[][] adjacent  =  {{-1,0}, {0,-1}, {0,1},  {1,0}};
+int[][] visited ;
+
+
+ int validChecking(int x, int y , int n, int m){
+           
+     if(x>=0 && x<n && y>=0 && y<m)
+	     return 1;
+     return 0;
+	}
+int helperMatchingFunction(String[] board , char s ,  int inx , int iny , int x , int y ,int n , int m , int k){
+      // inx = initial x index and iny initial y index
+      k++;
+	  int result = 0;
+
+	  for(int i = 0 ; i<4 ; i++){
+
+		  int newx = x + adjacent[i][0];    
+		  int newy = y + adjacent[i][1];
+
+          if( k>=4 && newx == inx && newy == iny )return 1;
+
+		  if( validChecking(newx, newy, n, m) == 1 && board[newx].charAt(newy)==s  &&  visited[newx][newy]==0  ){
+
+			  visited[newx][newy]=1; 
+			  
+			  result = helperMatchingFunction(board, s , inx , iny , newx, newy, n, m, k );
+			  
+			  if(result==1)return 1;
+
+			  	visited[newx][newy] = 0;
+		  }
+	  }
+return 0;
+}
+
+    int solve(String[] board , int n, int m){
+		
+		visited = new int[n][m];
+		if(n==0||m==0)return 0;
+        int result =0 ; 
+
+        for(int i =0  ; i< n ; i++){
+			for(int j = 0 ; j < m ; j++){
+
+			    	int k = 0; // given minimun value if k is 4
+			       visited[i][j]=1;
+                  int initial_i = i;
+				  int initial_j = j;
+     result = helperMatchingFunction(board, board[i].charAt(j) , initial_i , initial_j , i , j, n, m,k );//2  i and j paire hai
+// ek pair to save rhega ki initial position kya hai, and ek iterate krne ke liya
+				  visited[i][j]=0;
+                  if(result == 1) return 1;
+			}
+		}
+		return 0;
+	}	
+}

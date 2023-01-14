@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class Solution {
+
+	public static void main(String[] args) {
+        
+Scanner s = new Scanner(System.in);
+int v = s.nextInt();
+int e = s.nextInt();
+boolean[] visited = new boolean[v];
+int[][] matrix = new int[v][v];
+
+for(int i = 0 ; i < e ; i++){
+         int x = s.nextInt();
+		 int y = s.nextInt();
+        matrix[x][y] = 1;
+		matrix[y][x] = 1;
+}
+int start = s.nextInt();
+int end = s.nextInt();
+visited[start]=true;
+ArrayList<Integer> result = printPath(matrix,start,end,visited);
+           for(int i = 0; i< result.size() ; i++){
+			   System.out.print(result.get(i)+" ");
+		   }
+	}
+	private static ArrayList<Integer> printPath(int[][] matrix , int s , int e , boolean[] visited){
+		ArrayList<Integer> arr = new ArrayList<>();
+		if(s==e){// path to aaega but shortest path nahi aaega
+			arr.add(e);
+			return arr;
+		}
+
+		for(int i = 0 ; i < matrix.length ; i++){
+	
+		if(matrix[s][i]==1 && visited[i]==false){
+			visited[i] = true;
+         arr = printPath(matrix, i , e, visited);
+
+		       if( !arr.isEmpty() ){
+                 arr.add(s);
+				 return arr;
+			}
+
+		}
+	}
+  return arr;
+	}
+}

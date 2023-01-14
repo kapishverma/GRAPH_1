@@ -1,0 +1,83 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+
+class edgeClass  implements Comparable<edgeClass> {
+	int v1;
+	int v2;
+	int wt;
+	public edgeClass(int v1,int v2,int wt){
+		this.v1= v1;
+		this.v2 = v2;
+        this.wt = wt;
+	}
+   public int compareTo(edgeClass s){
+       return this.wt - s.wt;
+
+   }
+}
+public class Solution {
+
+	static int[] parentArray;
+
+    static int parentOfChild(int c){
+		if(parentArray[c]==c)return c;
+		return parentOfChild(parentArray[c]);
+	  }
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int V = sc.nextInt();
+		int E = sc.nextInt();
+        
+		ArrayList<edgeClass> array = new ArrayList<>();
+
+		for(int i = 0 ; i < E ; i++){
+			int v1 = sc.nextInt();
+			int v2 = sc.nextInt();
+			int wt = sc.nextInt();
+           array.add(new edgeClass(v1, v2, wt));
+		  }
+       
+	   Collections.sort(array);
+
+	   parentArray = new int[V];
+	   ArrayList<edgeClass> result = new ArrayList<>();
+
+
+	 for(int i =0 ; i< parentArray.length ; i++)
+	        parentArray[i]=i;
+
+int count = 0;int index =0;
+
+while (count!=V-1){
+
+	edgeClass temp = array.get(index);
+	index++;
+
+    int  V1 = temp.v1;
+    int  V2 = temp.v2;
+    int parentV1 = parentOfChild(V1);
+	int parentV2 = parentOfChild(V2);
+
+  if(parentV1 != parentV2){
+		   parentArray[parentV1] = parentV2;// v1 ke main parent ko v2 ke parent set kar denge;
+		   // isse sabhi jo v1 ke bachche uske bhi parent change ho jaege;
+
+	  if(V1>V2){
+		V1 = V1^V2;
+		V2 = V1^V2;
+		V1 = V1^V2;
+	   }
+
+     result.add(new edgeClass(V1,V2,temp.wt));
+     count++;
+   }
+}
+  for(int i = 0 ; i< result.size() ; i++){
+
+       edgeClass temp = result.get(i);
+	   System.out.println( temp.v1+" "+ temp.v2+" "+temp.wt );
+       }
+	}
+}

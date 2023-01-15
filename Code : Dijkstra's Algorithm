@@ -1,0 +1,69 @@
+import java.util.Scanner;
+
+public class Solution {
+
+public static int[][] matrix;
+public static boolean[] visited;
+public static int[] distance;
+
+
+public static void main(String[] args) {
+	Scanner s = new Scanner(System.in);
+	int V = s.nextInt();
+	int E = s.nextInt();
+
+	matrix = new int[V][V];
+	for (int i = 0; i < E; i++) {
+		int v1 = s.nextInt();
+		int v2 = s.nextInt();
+		int wt = s.nextInt();
+		matrix[v1][v2] = matrix[v2][v1] = wt;
+	}
+
+	visited = new boolean[V];
+	distance = new int[V];
+	for (int i = 1; i < V; i++)
+		distance[i] = Integer.MAX_VALUE;
+
+	DijkstrasAlgo();
+}
+
+public static void DijkstrasAlgo() {
+
+	int v = visited.length;
+	for (int i = 0; i < v; i++) {
+
+		int minVertex = MinVertex();
+		visited[minVertex] = true;
+
+		for (int j = 0; j < v; j++) {
+			if (matrix[minVertex][j] != 0 && !visited[j]) {
+
+				int j_to_mv_distance = distance[minVertex] + matrix[minVertex][j];
+
+				if (j_to_mv_distance < distance[j]) {
+					distance[j] = j_to_mv_distance;
+				}
+			}
+		}
+	}
+
+	print();
+}
+
+public static int MinVertex() {
+	int minVertex = -1;
+	for (int i = 0; i < visited.length; i++) {
+
+		if (!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
+			minVertex = i;
+	}
+	return minVertex;
+}
+
+public static void print() {
+
+	for (int i = 0; i < visited.length; i++)
+		System.out.println(i + " " + distance[i]);
+}
+}

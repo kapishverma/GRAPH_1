@@ -1,0 +1,65 @@
+import java.util.Scanner;
+
+public class Solution {
+    static  int[] wt;
+	static boolean[] visited;
+	static int[] parent;
+    static  int[][] edgeWeightMatrix;
+
+//_______________________________MIN-VERTEX_________________________
+	public static int MINVERTEX(){
+      int minVertex = -1;
+	       for(int i = 0 ; i< visited.length ;  i++){
+			   if(!visited[i] && ( minVertex==-1 || wt[i] < wt[minVertex]))
+			              minVertex=i;
+		   }
+         return minVertex;
+	}
+//________________________PRIM'S_ALGO______________________________
+   public static void prims(){
+	   int V = visited.length;
+    for(int i = 0 ; i < V ; i++){
+                int minVertex = MINVERTEX();
+                    visited[minVertex]=true;
+
+               for(int j = 0 ; j< V ; j++){
+                        
+		if( edgeWeightMatrix[minVertex][j] != 0  && !visited[j] && wt[j] > edgeWeightMatrix[minVertex][j] ){
+                  wt[j] = edgeWeightMatrix[minVertex][j];
+				  parent[j] = minVertex;
+						}
+			   }
+	   }
+   for(int i =1 ; i< V ; i++){
+	   if(i<parent[i])
+	       System.out.println( i+" "+ parent[i] + " " +wt[i] );
+		   else 
+		   		System.out.println(parent[i] + " " + i + " " + wt[i]);
+          }
+   }
+   //______________________________INPUT_FUNCTION_____________________________________
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		int V = s.nextInt();
+		int E = s.nextInt();
+
+         edgeWeightMatrix = new int[V][V];
+         for(int i = 0 ; i<E ; i++){
+            int v1 = s.nextInt();
+			int v2 = s.nextInt();
+			int wt = s.nextInt();
+            edgeWeightMatrix[v1][v2] = edgeWeightMatrix[v2][v1] = wt;
+		 }
+
+        wt = new int[V];
+		visited = new boolean[V];
+	    parent = new int[V];
+
+       parent[0] = -1;
+
+      for(int i = 1 ; i < V ; i++)
+      wt[i] = Integer.MAX_VALUE;
+	  
+      prims();
+	}
+}
